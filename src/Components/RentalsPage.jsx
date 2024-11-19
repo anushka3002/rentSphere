@@ -68,7 +68,7 @@ const RentalsPage = () => {
     { image: vineyards, name: 'Vineyards' },
   ]
   const [showSearch, setShowSearch] = useState(false);
-  const [areaType, setAreaType] = useState('Amazing views')
+  const [areaType, setAreaType] = useState('Amazing pools')
   const [liked, setLiked] = useState([])
   const searchBarRef = useRef(null);
   const navigate = useNavigate()
@@ -182,7 +182,7 @@ const RentalsPage = () => {
         </div>
         <div className='lg:mx-0 mx-6'>
           <div className='flex justify-between grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-4'>{holidayRentals.map((e, index) => {
-            return <div onClick={() => navigate('/rentalspage')} className='relative cursor-pointer'>
+            return <div onClick={() => navigate('/rentalDetailsPage')} className='relative cursor-pointer'>
               <img src={e.image} className='rounded-xl w-[100%] h-[250px]' />
               <div className={`absolute top-4 ${e.type == 'Superhost' ? 'bg-gray-500 text-white border border-gray-400' : 'bg-white'} rounded-2xl text-sm font-medium px-2 pb-1 left-4`}>{e.type}</div>
               <div>
