@@ -14,8 +14,15 @@ import star from '../images/star.webp'
 import next from '../images/next.png'
 import { useNavigate } from 'react-router'
 import { holidayRentals } from '../constant'
+import { useDispatch } from 'react-redux'
+import { getData } from '../Actions/action'
 
 const LandingPage = () => {
+    const dispatch = useDispatch()
+
+    useEffect(()=>{
+        dispatch(getData())
+    },[])
 
     const rentalType = [
         { image: chalets, name: 'Chalets', desc: 'Adventure-ready homes with après-ski style' },
