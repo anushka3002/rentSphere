@@ -30,12 +30,17 @@ import domes from '../images/domes.jpg'
 import vineyards from '../images/vineyards.jpg'
 import filters from '../images/filters.png'
 import star from '../images/star.webp'
-import next from '../images/next.png'
+import profile from '../images/profile.png'
 import heart from '../images/heart.png'
 import pinkHeart from '../images/pink-heart.png'
-import pinkHeart2 from '../images/pink-heart-2.png'
-import { holidayRentals } from '../constant'
 import { useNavigate } from 'react-router'
+import { useDispatch, useSelector } from 'react-redux'
+import { getData } from '../Actions/action'
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Footer from './Footer'
+import GoogleAuth from './GoogleOauth'
 
 const RentalsPage = () => {
   const area = [
@@ -67,37 +72,80 @@ const RentalsPage = () => {
     { image: domes, name: 'Domes' },
     { image: vineyards, name: 'Vineyards' },
   ]
+  const { data } = useSelector(state => state.data)
   const [showSearch, setShowSearch] = useState(false);
   const [areaType, setAreaType] = useState('Amazing pools')
   const [liked, setLiked] = useState([])
   const searchBarRef = useRef(null);
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const userDetails = JSON.parse(localStorage.getItem('userdetails')) || []
+
+  useEffect(() => {
+    dispatch(getData())
+  }, [])
 
   useEffect(() => {
     const handleIntersection = (entries) => {
       const entry = entries[0];
       setShowSearch(!entry.isIntersecting);
     };
-
     const observer = new IntersectionObserver(handleIntersection, {
       root: null,
       threshold: 0,
     });
-
     if (searchBarRef.current) {
       observer.observe(searchBarRef.current);
     }
-
     return () => {
       if (searchBarRef.current) observer.unobserve(searchBarRef.current);
     };
   }, []);
 
+  const CustomNextArrow = ({ className, style, onClick }) => (
+    <div
+      className={className}
+      style={{
+        ...style,
+        display: "block",
+        top: "50%",
+        right: "10px", 
+        transform: "translateY(-50%)",
+        zIndex: 2,
+      }}
+      onClick={onClick}
+    />)
+
+  const CustomPrevArrow = ({ className, style, onClick }) => (
+    <div
+      className={className}
+      style={{
+        ...style,
+        display: "block",
+        top: "50%",
+        left: "10px",
+        transform: "translateY(-50%)",
+        zIndex: 2,
+      }}
+      onClick={onClick}
+    />);
+
+  var settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    slidesToScroll: 1,
+    nextArrow: <CustomNextArrow />,
+    prevArrow: <CustomPrevArrow />,
+  };
+
   return (
     <>
       <div className='border-b pb-6'>
         <div className={`flex h-[80px] px-[5%] z-10 fixed top-0 bg-white justify-between py-4 w-full`}>
-          <img width={'10%'} className='my-auto' src={airbnblogo} />
+          <img onClick={()=>navigate('/')} alt="img" width={'10%'} className='my-auto cursor-pointer' src={airbnblogo} />
           {showSearch ?
             <div className={`border transition duration-300 ease-out shadow-md w-[30%] mx-auto rounded-full grid grid-flow-col justify-stretch`}>
               <div className='my-auto rounded-full pl-8 transition duration-200 hover:bg-[#ebebeb] cursor-pointer py-1'>
@@ -115,18 +163,21 @@ const RentalsPage = () => {
                   </div>
                   <div className='rounded-full my-auto p-3 bg-gradient-to-r
                  from-red-500 to-pink-600 transition-transform'>
-                    <img width={'12px'} className='' src={search} />
+                    <img alt="img" width={'12px'} className='' src={search} />
                   </div>
                 </div>
               </div>
             </div>
             : <div className='flex my-auto'>
-              <p className='text-lg text-gray-700 font-medium mx-3'>Stays</p>
-              <p className='text-lg text-gray-500 mx-3'>Experiences</p>
+              <p className='text-lg text-gray-700 font-medium mx-3 cursor-pointer'>Stays</p>
+              <p className='text-lg text-gray-500 mx-3 cursor-pointer'>Experiences</p>
             </div>}
           <div className='flex'>
             <p className='text-md
-           text-nowrap font-medium my-auto'>Airbnb your home</p>
+           text-nowrap font-medium my-auto cursor-pointer'>Airbnb rentals</p>
+            <GoogleAuth/>
+           {<img alt='img' width={'40px'} className='my-auto ml-5 rounded-3xl' src={userDetails ? userDetails?.picture : profile}/>}
+
           </div>
         </div>
 
@@ -156,7 +207,7 @@ const RentalsPage = () => {
               </div>
               <div className='rounded-full my-2 p-4 bg-gradient-to-r
                  from-red-500 to-pink-600 transition-transform'>
-                <img width={'16px'} src={search} />
+                <img alt="img" width={'16px'} src={search} />
               </div>
             </div>
           </div>
@@ -167,8 +218,8 @@ const RentalsPage = () => {
           <div className='flex w-[90%] overflow-x-auto scroll-container'>
             {area.map((ar) => {
               return <>
-                <div onClick={() => setAreaType(ar.name)} className={`mr-12 my-6 pb-3 ${areaType == ar.name ? 'border-b-2 border-gray-800' : 'greyed-out hover:border-b-2 hover:border-gray-200'}`}>
-                  <img className='mx-auto' width={'25px'} src={ar.image} />
+                <div onClick={() => setAreaType(ar.name)} className={`mr-12 my-6 pb-3 ${areaType === ar.name ? 'border-b-2 border-gray-800' : 'greyed-out hover:border-b-2 hover:border-gray-200'}`}>
+                  <img alt="img" className='mx-auto' width={'25px'} src={ar.image} />
                   <p className='text-xs font-medium text-nowrap'>{ar.name}</p>
                 </div>
               </>
@@ -177,31 +228,37 @@ const RentalsPage = () => {
             </div>
           </div>
           <div className='w-[10%] my-auto pl-5 justify-end flex'>
-            <button className='flex my-auto px-4 mb-3 py-3 border border-gray-300 rounded-lg'><img className='my-auto' width={'17px'} src={filters} /><p className='text-xs ml-1 font-medium'>Filters</p></button>
+            <button className='flex my-auto px-4 mb-3 py-3 border border-gray-300 rounded-lg'><img alt="img" className='my-auto' width={'17px'} src={filters} /><p className='text-xs ml-1 font-medium'>Filters</p></button>
           </div>
         </div>
         <div className='lg:mx-0 mx-6'>
-          <div className='flex justify-between grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-4'>{holidayRentals.map((e, index) => {
-            return <div onClick={() => navigate('/rentalDetailsPage')} className='relative cursor-pointer'>
-              <img src={e.image} className='rounded-xl w-[100%] h-[250px]' />
-              <div className={`absolute top-4 ${e.type == 'Superhost' ? 'bg-gray-500 text-white border border-gray-400' : 'bg-white'} rounded-2xl text-sm font-medium px-2 pb-1 left-4`}>{e.type}</div>
+          <div className='flex justify-between grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-6'>{data?.data?.map((e, index) => {
+            return <div className='relative cursor-pointer'>
+
+              <Slider {...settings} className="relative scroll-container slider-container">
+                {e.images.map((image) => {
+                  return <img onClick={()=>navigate(`/rentalDetailsPage/${e._id}`)} alt="img" src={image} className='rounded-xl w-[100%] h-[250px]' />
+                })}
+              </Slider>
+
+              <div className={`absolute top-4 ${e.type === 'Superhost' ? 'bg-gray-500 text-white border border-gray-400' : 'bg-white'} rounded-2xl text-sm font-medium px-2 pb-1 left-4`}>Guest favourite</div>
               <div>
-                <img onClick={()=>liked.includes(index) ? setLiked(liked.filter((e)=>e!=index)) : setLiked([...liked,index])} className='absolute top-4 right-4 mx-1' width={'21px'} src={liked.includes(index) ? pinkHeart : heart}/>
+                <img alt="img" onClick={(e) =>{e.stopPropagation(); liked.includes(index) ? setLiked(liked.filter((e) => e !== index)) : setLiked([...liked, index])}} className='absolute top-4 right-4 mx-1' width={'21px'} src={liked.includes(index) ? pinkHeart : heart} />
               </div>
               <div className='flex justify-between items-end'>
-                <p className='text-xl font-medium text-gray-800 mt-1 tracking-tight'>{e.name}</p>
+                <p className='text-xl font-medium text-gray-800 mt-1 tracking-tight'>{e.location}</p>
                 <div className='flex'>
-                  <img className='my-auto' width={'20px'} src={star} />
-                  <p className='my-auto'>{e.rating}</p>
+                  <img alt="img" className='my-auto' width={'20px'} src={star} />
+                  <p className='my-auto'>4.2</p>
                 </div>
               </div>
-              <p className='mb-3 tracking-tight text-gray-500 text-md leading-normal'>{e.desc}</p>
+              <p className='mb-3 tracking-tight truncate text-gray-500 text-md leading-normal'>{e.desc}</p>
             </div>
           })}
           </div>
-          <button className='rounded-lg border border-gray-400 py-2 px-4 flex font-medium'>Show all <img className='my-auto' width={'15px'} src={next} /></button>
         </div>
-        </div>
+        <Footer/>
+      </div>
     </>
   )
 }

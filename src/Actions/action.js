@@ -1,5 +1,5 @@
 import axios from "axios"
-import { GET_PRODUCTS, GET_PRODUCTS_FAIL, GET_PRODUCTS_SUCCESS } from "../Constant/constant"
+import { GET_PRODUCTS, GET_PRODUCTS_FAIL, GET_PRODUCTS_SUCCESS, GET_SINGLE_PRODUCT, GET_SINGLE_PRODUCT_FAIL, GET_SINGLE_PRODUCT_SUCCESS } from "../Constant/constant"
 
 export const getData = () => async (dispatch) =>{
     try{
@@ -14,6 +14,24 @@ export const getData = () => async (dispatch) =>{
     }catch(error){
         dispatch({
             type: GET_PRODUCTS_FAIL,
+            payload: error
+        })
+    }
+}
+
+export const getSingleData = (id) => async (dispatch) =>{
+    try{
+        dispatch({
+            type: GET_SINGLE_PRODUCT
+        })
+        const data = await axios.get(`https://airbnb-backend-eight-omega.vercel.app/api/products/${id}`)
+        dispatch({
+            type: GET_SINGLE_PRODUCT_SUCCESS,
+            payload: data
+        })
+    }catch(error){
+        dispatch({
+            type: GET_SINGLE_PRODUCT_FAIL,
             payload: error
         })
     }
