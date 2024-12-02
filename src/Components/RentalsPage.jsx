@@ -175,7 +175,7 @@ const RentalsPage = () => {
           <div className='flex'>
             <p className='text-md
            text-nowrap font-medium my-auto cursor-pointer'>Airbnb rentals</p>
-            <GoogleAuth/>
+            {/* <GoogleAuth/> */}
            {<img alt='img' width={'40px'} className='my-auto ml-5 rounded-3xl' src={userDetails ? userDetails?.picture : profile}/>}
 
           </div>
