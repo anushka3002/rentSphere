@@ -6,7 +6,7 @@ export const getProducts = (state = {data : []},action) =>{
             return{
                 loading: true,
                 data: []
-            }
+            } 
         case GET_PRODUCTS_SUCCESS:
             return{
                 loading: false,
