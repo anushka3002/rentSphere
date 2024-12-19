@@ -4,6 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
+src/images/Insomnia.Core-10.1.1.exe
 
 # testing
 /coverage
