@@ -232,7 +232,7 @@ const RentalsPage = () => {
           </div>
         </div>
         <div className='lg:mx-0 mx-6'>
-          <div className='flex justify-between grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-6'>{data?.data?.map((e, index) => {
+          <div className=' justify-between grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-6'>{data?.data?.map((e, index) => {
             return <div className='relative cursor-pointer'>
 
               <Slider {...settings} className="relative scroll-container slider-container">
@@ -241,7 +241,7 @@ const RentalsPage = () => {
                 })}
               </Slider>
 
-              <div className={`absolute top-4 ${e.type === 'Superhost' ? 'bg-gray-500 text-white border border-gray-400' : 'bg-white'} rounded-2xl text-sm font-medium px-2 pb-1 left-4`}>Guest favourite</div>
+              <div className={`absolute top-4 ${e.typeOfRental === 'superhost' ? 'bg-gray-500 text-white border border-gray-400' : 'bg-white'} rounded-2xl text-sm font-medium px-2 pb-1 left-4`}>{e.typeOfRental == 'superhost' ? 'Superhost' : 'Guest favourite'}</div>
               <div>
                 <img alt="img" onClick={(e) =>{e.stopPropagation(); liked.includes(index) ? setLiked(liked.filter((e) => e !== index)) : setLiked([...liked, index])}} className='absolute top-4 right-4 mx-1' width={'21px'} src={liked.includes(index) ? pinkHeart : heart} />
               </div>
