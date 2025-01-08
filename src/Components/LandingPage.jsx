@@ -55,6 +55,11 @@ const LandingPage = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    useEffect(()=>{
+        sessionStorage.setItem('checkInValue',checkInValue)
+        sessionStorage.setItem('checkOutValue',checkOutValue)
+    },[checkInValue,checkOutValue])
+
     return (
         <div>
             <div className={`flex px-[5%] bg-white justify-between py-6 w-full`}>

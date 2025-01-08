@@ -6,15 +6,17 @@ import dropdown from '../images/dropdown.webp'
 import star from '../images/star.webp'
 import rental1 from '../images/rental1.webp'
 import check from '../images/check.png'
-import { useNavigate } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import Lottie from "lottie-react";
 import paymentData from "../images/payment.json";
 import greenCheck from "../images/greenCheck.PNG"
 import Confetti from "react-confetti";
+import { formattedDate } from '../functions'
 
 const BookingPage = () => {
 
     const navigate = useNavigate()
+    const {guests, price, nights, dates, date2} = useParams()
     const [paymentOption, setPaymentOption] = useState('UPI')
     const [paymentDropdown, setPaymentDropdown] = useState(false)
     const [paySuccess, setPaySuccess] = useState(false)
@@ -26,6 +28,7 @@ const BookingPage = () => {
     const [cvv, setCvv] = useState('')
     const [payClick, setPayClick] = useState(false)
     const [validatePay, setValidatePay] = useState({ upi: false, card: false, expire: false, cvv: false })
+    const bookedStay = JSON.parse(localStorage.getItem('bookedStay'))
 
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const [windowHeight, setWindowHeight] = useState(window.innerHeight);
@@ -138,11 +141,11 @@ const BookingPage = () => {
                     <div className='flex justify-between mt-4'>
                         <div>
                             <p className='text-lg font-medium'>Dates</p>
-                            <p className='text-lg'>12-15 Dec</p>
+                            <p className='text-lg'>{dates} - {date2}</p>
                         </div>
                         <div>
                             <p className='text-lg font-medium'>Guests</p>
-                            <p className='text-lg'>2 guests</p>
+                            <p className='text-lg'>{`${guests} ${guests > 1 ? 'guests' : 'guest'}`}</p>
                         </div>
                     </div>
                     <hr className='my-6'></hr>
@@ -186,45 +189,45 @@ const BookingPage = () => {
                     </div>}
                     <hr className='my-7'></hr>
                     <p className='text-2xl font-medium mb-4'>Cancellation policy</p>
-                    <span className='font-medium text-lg leading-tight'>Free cancellation before 7 Dec.</span>&nbsp;<span className='text-lg leading-tight'>Cancel before check-in on 12 Dec for a partial refund.</span>
+                    <span className='font-medium text-lg leading-tight'>Free cancellation before {`${formattedDate(new Date())}`}.</span>&nbsp;<span className='text-lg leading-tight'>Cancel before check-in on {dates} for a partial refund.</span>
                     <hr className='my-7'></hr>
                     <p className='text-xs mb-6'>By selecting the button below, I agree to the Host's House Rules, Ground rules for guests, Airbnb's Rebooking and Refund Policy and that Airbnb can charge my payment method if I’m responsible for damage. I agree to pay the total amount shown if the Host accepts my booking request.</p>
                     <button onClick={handlePay} className="w-full mt-4 py-3 text-white text-lg font-semibold rounded-lg bg-gradient-to-r
-                    from-red-500 to-pink-600 transition-transform flex justify-center mb-16">Pay ₹3433</button>
+                    from-red-500 to-pink-600 transition-transform flex justify-center mb-16">Pay ₹{(price*nights)+878}</button>
                 </div>
 
                 {/* payment card */}
                 <div className='fixed bottom-20 right-20 border w-[37%] bg-white rounded-2xl px-7 py-6'>
                     <div className='flex'>
-                        <img alt="img" className='rounded-xl' width={'130px'} src={rental1} />
+                        <img alt="img" className='rounded-xl' width={'130px'} src={bookedStay?.data?.images[0]} />
                         <div className='my-auto ml-4'>
-                            <p className='text-lg font-medium'>Boutique farm stay at Bangalore</p>
+                            <p className='text-lg font-medium'>{bookedStay?.data?.name}</p>
                             <p>Farm stay</p>
                             <div className='flex'>
                                 <img alt="img" className='my-auto' width={'20px'} src={star} />
-                                <p className='mr-1 font-medium'>4.85</p>
-                                <p>(20 reviews)</p>
+                                <p className='mr-1 font-medium'>{bookedStay?.data?.ratings}</p>
+                                <p>({bookedStay?.data?.reviews} reviews)</p>
                             </div>
                         </div>
                     </div>
                     <hr className='my-6'></hr>
                     <p className='text-2xl font-medium mb-2'>Price details</p>
                     <div className='flex justify-between pt-2'>
-                        <p className='underline text-lg'>₹13,333 x 3 nights</p>
-                        <p className='text-lg'>₹40,000</p>
+                        <p className='underline text-lg'>₹{price} x {nights} {nights > 1 ? 'nights' : 'night'}</p>
+                        <p className='text-lg'>₹{price * nights}</p>
                     </div>
                     <div className='flex justify-between pt-2'>
                         <p className='underline text-lg'>Airbnb service fee</p>
-                        <p>₹5,647</p>
+                        <p>₹480</p>
                     </div>
                     <div className='flex justify-between pt-2'>
                         <p className='underline text-lg'>Taxes</p>
-                        <p>₹7,200</p>
+                        <p>₹398</p>
                     </div>
                     <hr className='my-5'></hr>
                     <div className='flex justify-between'>
                         <div><span className='text-lg font-medium'>Total&nbsp;</span><span className='text-lg font-medium underline'>(INR)</span></div>
-                        <p className='text-lg font-medium'>₹45,647</p>
+                        <p className='text-lg font-medium'>₹{(price*nights)+878}</p>
                     </div>
                 </div>
             </div>

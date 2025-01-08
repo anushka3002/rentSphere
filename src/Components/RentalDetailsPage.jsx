@@ -29,6 +29,7 @@ import DatePicker from 'react-date-picker';
 import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import Footer from './Footer'
+import { formattedDate } from '../functions'
 
 const RentalDetailsPage = () => {
 
@@ -37,6 +38,8 @@ const RentalDetailsPage = () => {
     const [save, setSave] = useState(false)
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const storedCheckIn = sessionStorage.getItem('checkInValue')
+    const storedCheckOut = sessionStorage.getItem('checkOutValue')
     const [guests, setGuests] = useState(1)
     const [checkInValue, onCheckInChange] = useState(new Date());
     const [checkOutValue, onCheckOutChange] = useState(() => {
@@ -46,8 +49,8 @@ const RentalDetailsPage = () => {
     });
 
     const calculateDaysDifference = () => {
-        const checkInDate = new Date(checkInValue).setHours(0, 0, 0, 0);
-        const checkOutDate = new Date(checkOutValue).setHours(0, 0, 0, 0);
+        const checkInDate = new Date(storedCheckIn ? storedCheckIn : checkInValue).setHours(0, 0, 0, 0);
+        const checkOutDate = new Date(storedCheckOut ? storedCheckOut : checkOutValue).setHours(0, 0, 0, 0);
         const difference = (checkOutDate - checkInDate) / (1000 * 60 * 60 * 24);
         return difference >= 1 ? difference : 0;
     };
@@ -55,6 +58,10 @@ const RentalDetailsPage = () => {
     useEffect(() => {
         dispatch(getSingleData(id))
     }, [id])
+
+    const handleProceed = () =>{
+        localStorage.setItem('bookedStay',JSON.stringify(details))
+    }
 
     return (
         <>
@@ -169,11 +176,11 @@ const RentalDetailsPage = () => {
                     <div className='flex border-b border-gray-500'>
                         <div className='w-[50%] px-3 py-2'>
                             <p className='text-xs font-medium'>CHECK-IN</p>
-                            <DatePicker onChange={onCheckInChange} value={checkInValue} />
+                            <DatePicker onChange={onCheckInChange} value={storedCheckIn ? storedCheckIn : checkInValue} />
                         </div>
                         <div className='border-l border-gray-400 px-3 py-2'>
                             <p className='text-xs font-medium'>CHECK-OUT</p>
-                            <DatePicker onChange={onCheckOutChange} value={checkOutValue} />
+                            <DatePicker onChange={onCheckOutChange} value={storedCheckOut ? storedCheckOut : checkOutValue} />
                         </div>
                     </div>
                     <div className='flex justify-between border-t px-3 py-2'>
@@ -188,7 +195,7 @@ const RentalDetailsPage = () => {
                 </div>
                 <p className='mt-2 text-xs text-gray-500'>Children of 12 years or below don't count.</p>
 
-                <button onClick={() => navigate(`/bookingPage/${guests}/${details?.data?.price}/${calculateDaysDifference()}/12`)} className="w-full mt-4 py-3 text-white text-lg font-semibold rounded-lg bg-gradient-to-r
+                <button onClick={()=>{handleProceed(); navigate(`/bookingPage/${guests}/${details?.data?.price}/${calculateDaysDifference()}/${formattedDate(storedCheckIn ? storedCheckIn : checkInValue)}/${formattedDate(storedCheckOut ? storedCheckOut : checkOutValue)}`)}} className="w-full mt-4 py-3 text-white text-lg font-semibold rounded-lg bg-gradient-to-r
                  from-red-500 to-pink-600 transition-transform flex justify-center">Proceed</button>
                 <p className='text-center text-md mt-4'>You won't be charged yet</p>
                 <div className='flex justify-between pt-2'>

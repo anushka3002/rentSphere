@@ -35,12 +35,15 @@ import heart from '../images/heart.png'
 import pinkHeart from '../images/pink-heart.png'
 import { useNavigate } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
-import { getData } from '../Actions/action'
+import { getData, wishlist } from '../Actions/action'
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Footer from './Footer'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 import GoogleAuth from './GoogleOauth'
+import { formattedDate } from '../functions'
 
 const RentalsPage = () => {
   const area = [
@@ -80,10 +83,18 @@ const RentalsPage = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const userDetails = JSON.parse(localStorage.getItem('userdetails')) || []
+  const storedCheckIn = sessionStorage.getItem('checkInValue')
+  const storedCheckOut = sessionStorage.getItem('checkOutValue')
 
   useEffect(() => {
     dispatch(getData())
   }, [])
+
+  useEffect(() => {
+    const savedIndices = data?.data?.map((item, index) => (item.saved ? index : null))
+      .filter(index => index !== null);
+    setLiked(savedIndices);
+  }, [data?.data]);
 
   useEffect(() => {
     const handleIntersection = (entries) => {
@@ -101,6 +112,7 @@ const RentalsPage = () => {
       if (searchBarRef.current) observer.unobserve(searchBarRef.current);
     };
   }, []);
+  let numbers = [1,2,3,4,5,6,7,8]
 
   const CustomNextArrow = ({ className, style, onClick }) => (
     <div
@@ -141,12 +153,37 @@ const RentalsPage = () => {
     prevArrow: <CustomPrevArrow />,
   };
 
+  const handleLike = (e, index) =>{
+    liked?.includes(index) ? setLiked(liked.filter((e) => e !== index)) : setLiked([...liked, index])
+    dispatch(wishlist(e._id, e?.saved ? false : true))
+  }
+
   return (
     <>
       <div className='border-b pb-6'>
         <div className={`flex h-[80px] px-[5%] z-10 fixed top-0 bg-white justify-between py-4 w-full`}>
           <img onClick={()=>navigate('/')} alt="img" width={'10%'} className='my-auto cursor-pointer' src={airbnblogo} />
-          {showSearch ?
+          {storedCheckIn !='null' ? <div className={`border transition duration-300 ease-out shadow-md w-[30%] mx-auto rounded-full grid grid-flow-col justify-stretch`}>
+              <div className='my-auto rounded-full pl-8 transition duration-200 hover:bg-[#ebebeb] cursor-pointer py-1'>
+                <p className='text-sm font-medium text-gray-700'>India</p>
+              </div>
+              <div className='border-l my-auto'>
+                <div className='pl-5 my-auto transition duration-200 hover:bg-[#ebebeb] cursor-pointer py-1 rounded-full'>
+                  <p className='text-sm font-medium text-gray-700'>{formattedDate(storedCheckIn)} - {formattedDate(storedCheckOut)}</p>
+                </div>
+              </div>
+              <div className='border-l my-auto'>
+                <div className='pl-5 my-auto transition duration-200 hover:bg-[#ebebeb] cursor-pointer rounded-full flex justify-between pr-2'>
+                  <div className='my-auto'>
+                    <p className='text-sm font-medium text-gray-700'>1 guest</p>
+                  </div>
+                  <div className='rounded-full my-auto p-3 bg-gradient-to-r
+                 from-red-500 to-pink-600 transition-transform'>
+                    <img alt="img" width={'12px'} className='' src={search} />
+                  </div>
+                </div>
+              </div>
+            </div> : showSearch ?
             <div className={`border transition duration-300 ease-out shadow-md w-[30%] mx-auto rounded-full grid grid-flow-col justify-stretch`}>
               <div className='my-auto rounded-full pl-8 transition duration-200 hover:bg-[#ebebeb] cursor-pointer py-1'>
                 <p className='text-sm font-medium text-gray-700'>Anywhere</p>
@@ -182,7 +219,7 @@ const RentalsPage = () => {
         </div>
 
         {/* 2 */}
-        <div ref={searchBarRef} className='border mt-20 shadow-md w-[70%] mx-auto rounded-full grid grid-flow-col justify-stretch'>
+        {storedCheckIn == 'null' && <div ref={searchBarRef} className='border mt-20 shadow-md w-[70%] mx-auto rounded-full grid grid-flow-col justify-stretch'>
           <div className='my-auto rounded-full pl-8 transition duration-200 hover:bg-[#ebebeb] cursor-pointer py-3'>
             <p className='text-sm font-medium text-gray-700'>Where</p>
             <p className='text-gray-500 text-sm font-medium'>Search destinations</p>
@@ -211,9 +248,9 @@ const RentalsPage = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div>}
       </div>
-      <div className='lg:mx-8 mx-6'>
+      <div className={`${storedCheckIn != 'null' ? 'mt-10' : ''} lg:mx-8 mx-6`}>
         <div className='flex'>
           <div className='flex w-[90%] overflow-x-auto scroll-container'>
             {area.map((ar) => {
@@ -232,7 +269,7 @@ const RentalsPage = () => {
           </div>
         </div>
         <div className='lg:mx-0 mx-6'>
-          <div className=' justify-between grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-6'>{data?.data?.map((e, index) => {
+          <div className='justify-between grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-6'>{data?.data?.length>0 ? data?.data?.map((e, index) => {
             return <div className='relative cursor-pointer'>
 
               <Slider {...settings} className="relative scroll-container slider-container">
@@ -243,7 +280,7 @@ const RentalsPage = () => {
 
               <div className={`absolute top-4 ${e.typeOfRental === 'superhost' ? 'bg-gray-500 text-white border border-gray-400' : 'bg-white'} rounded-2xl text-sm font-medium px-2 pb-1 left-4`}>{e.typeOfRental == 'superhost' ? 'Superhost' : 'Guest favourite'}</div>
               <div>
-                <img alt="img" onClick={(e) =>{e.stopPropagation(); liked.includes(index) ? setLiked(liked.filter((e) => e !== index)) : setLiked([...liked, index])}} className='absolute top-4 right-4 mx-1' width={'21px'} src={liked.includes(index) ? pinkHeart : heart} />
+                <img alt="img" onClick={(el) =>{el.stopPropagation(); handleLike(e, index)}} className='absolute top-4 right-4 mx-1' width={'21px'} src={liked?.includes(index) ? pinkHeart : heart} />
               </div>
               <div className='flex justify-between items-end'>
                 <p className='text-xl font-medium text-gray-800 mt-1 tracking-tight'>{e.location}</p>
@@ -254,6 +291,10 @@ const RentalsPage = () => {
               </div>
               <p className='mb-3 tracking-tight truncate text-gray-500 text-md leading-normal'>{e.desc}</p>
             </div>
+          }) : numbers.map((data)=>{
+            return <>
+            <Skeleton width={'100%'} height={'250px'} count={1} />
+            </>
           })}
           </div>
         </div>

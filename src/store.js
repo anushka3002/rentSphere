@@ -1,10 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { getProducts, getSingleProduct } from './Reducers/reducer';
+import { getProducts, getSingleProduct, updateWishlist } from './Reducers/reducer';
 
 const store = configureStore({
   reducer: {
     data : getProducts,
-    details: getSingleProduct
+    details: getSingleProduct,
+    wishlistData: updateWishlist
   },
 });
 
