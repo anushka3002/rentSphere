@@ -12,7 +12,7 @@ const Footer = () => {
     const thingsToDo = ['Things to do', 'Entertainment', 'Sightseeing', 'Wellness', 'Art culture', 'Food and drink', 'Nature and outdoors', 'Sports activities']
 
     return (
-        <div className='mt-16 mx-6 lg:mx-0'>
+        <div className='mt-16'>
             <p className='text-2xl font-medium text-gray-800 mb-1'>Destinations to explore</p>
             <div className='flex'>
                 <div onClick={() => { setStayType(typeOfStays); setStayTypeKey('typeOfStays') }} className={`${stayTypeKey === 'typeOfStays' ? 'border-b-2 border-gray-600' : ''} cursor-pointer text-sm font-medium`}><p className={`py-1 px-2 rounded-lg transition duration-300 hover:bg-gray-100 mb-1`}>Other types of stays</p></div>

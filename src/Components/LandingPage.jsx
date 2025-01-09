@@ -33,12 +33,14 @@ const LandingPage = () => {
         { image: AC, name: 'Air conditioning' }
     ]
 
-    const [checkInValue, onCheckInChange] = useState(new Date());
-    const [checkOutValue, onCheckOutChange] = useState(() => {
-        const initialCheckOut = new Date();
-        initialCheckOut.setDate(initialCheckOut.getDate() + 1);
-        return initialCheckOut;
-    });
+    const [checkInValue, onCheckInChange] = useState(null)
+    const [checkOutValue, onCheckOutChange] = useState(null)
+    // const [checkInValue, onCheckInChange] = useState(new Date());
+    // const [checkOutValue, onCheckOutChange] = useState(() => {
+    //     const initialCheckOut = new Date();
+    //     initialCheckOut.setDate(initialCheckOut.getDate() + 1);
+    //     return initialCheckOut;
+    // });
  
     const [showNavbar, setShowNavbar] = useState(false);
     const navigate = useNavigate()
@@ -56,14 +58,14 @@ const LandingPage = () => {
     }, []);
 
     useEffect(()=>{
-        sessionStorage.setItem('checkInValue',checkInValue)
-        sessionStorage.setItem('checkOutValue',checkOutValue)
+        sessionStorage.setItem('checkInValue',JSON.stringify(checkInValue))
+        sessionStorage.setItem('checkOutValue',JSON.stringify(checkOutValue))
     },[checkInValue,checkOutValue])
 
     return (
         <div>
             <div className={`flex px-[5%] bg-white justify-between py-6 w-full`}>
-                <img alt="img"width={'8%'} src={airbnblogo} />
+                <img alt="img"width={'100px'} src={airbnblogo} />
                 <div className='flex'>
                     <p className='text-md text-nowrap font-medium my-auto'>Airbnb rentals</p>
                 </div>

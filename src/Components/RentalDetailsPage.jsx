@@ -1,8 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import airbnblogo from '../images/airbnb.png'
-import search from '../images/search.png'
-import share from '../images/share.png'
-import blackHeart from '../images/black-heart.webp'
 import pinkheart from '../images/pink-heart.png'
 import star from '../images/star.webp'
 import profile from '../images/profile.png'
@@ -30,16 +26,16 @@ import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import Footer from './Footer'
 import { formattedDate } from '../functions'
+import Navbar from './Navbar'
 
 const RentalDetailsPage = () => {
 
     const { id } = useParams()
     const { details } = useSelector(state => state.details)
-    const [save, setSave] = useState(false)
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const storedCheckIn = sessionStorage.getItem('checkInValue')
-    const storedCheckOut = sessionStorage.getItem('checkOutValue')
+    const storedCheckIn = JSON.parse(sessionStorage.getItem('checkInValue'))
+    const storedCheckOut = JSON.parse(sessionStorage.getItem('checkOutValue'))
     const [guests, setGuests] = useState(1)
     const [checkInValue, onCheckInChange] = useState(new Date());
     const [checkOutValue, onCheckOutChange] = useState(() => {
@@ -59,58 +55,25 @@ const RentalDetailsPage = () => {
         dispatch(getSingleData(id))
     }, [id])
 
-    const handleProceed = () =>{
-        localStorage.setItem('bookedStay',JSON.stringify(details))
+    const handleProceed = () => {
+        localStorage.setItem('bookedStay', JSON.stringify(details))
     }
 
     return (
         <>
-            <div className={`flex h-[80px] px-[5%] z-10 bg-white justify-between border-b py-4 w-full`}>
-                <img onClick={() => navigate('/')} alt="img" width={'10%'} className='my-auto cursor-pointer' src={airbnblogo} />
-                <div className={`border transition duration-300 ease-out shadow-md w-[30%] mx-auto rounded-full grid grid-flow-col justify-stretch`}>
-                    <div className='my-auto rounded-full pl-8 transition duration-200 hover:bg-[#ebebeb] cursor-pointer py-1'>
-                        <p className='text-sm font-medium text-gray-700'>Anywhere</p>
-                    </div>
-                    <div className='border-l my-auto'>
-                        <div className='pl-5 my-auto transition duration-200 hover:bg-[#ebebeb] cursor-pointer py-1 rounded-full'>
-                            <p className='text-sm font-medium text-gray-700'>Any week</p>
-                        </div>
-                    </div>
-                    <div className='border-l my-auto'>
-                        <div className='pl-5 my-auto transition duration-200 hover:bg-[#ebebeb] cursor-pointer rounded-full flex justify-between pr-2'>
-                            <div className='my-auto'>
-                                <p className='text-sm font-medium text-gray-700'>Add guests</p>
-                            </div>
-                            <div className='rounded-full my-auto p-3 bg-gradient-to-r
-                            from-red-500 to-pink-600 transition-transform'>
-                                <img alt="img" width={'12px'} className='' src={search} />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className='flex'>
-                    <p className='text-md
-                    text-nowrap font-medium my-auto'>Airbnb rentals</p>
-                </div>
-            </div>
-            <div className='mx-16 pt-5'>
+            <Navbar />
+            <div className='lg:mx-16 mx-6 pt-5'>
                 <div className='flex justify-between pb-5'>
-                    <p className='text-3xl font-medium'>
+                    <p className='lg:text-3xl text-xl font-medium'>
                         {details?.data?.name}
                     </p>
-                    <div className='flex'>
-                        <div className='flex my-auto'>
-                            <img alt="img" className='my-auto' width={'12px'} src={share} />
-                            <p className='underline ml-3'>Share</p>
-                        </div>
-                        <div className='w-[20%] flex my-auto'>
-                            <img alt="img" onClick={() => setSave(!save)} className={`my-auto cursor-pointer ${save ? '' : ''}`} width={save ? '20px' : '35px'} src={save ? pinkheart : blackHeart} />
-                            <p className='my-auto underline'>Save</p>
-                        </div>
-                    </div>
                 </div>
-                <div>
-                    <img alt="img" className='rounded-xl' width={'600px'} height={'300px'} src={details?.data?.images[0]} />
+                <div className='flex'>
+                    <img alt="img" className='rounded-xl lg:w-[60%] w-[100%] lg:h-[500px] h-[300px]' src={details?.data?.images[0]} />
+                    <div className='lg:flex hidden h-[500px] ml-8 w-[30%] flex-col justify-between'>
+                        <img alt="img" className='rounded-xl' style={{ height: '46%' }} src={details?.data?.images[1]} />
+                        <img alt="img" className='rounded-xl' style={{ height: '46%' }} src={details?.data?.images[2]} />
+                    </div>
                 </div>
                 <p className='text-2xl font-medium pt-8'>{details?.data?.location}</p>
                 <p className='text-lg'>{details?.data?.guests} guests • {details?.data?.bedrooms} bedrooms • {details?.data?.beds} beds • 2 bathrooms</p>
@@ -147,70 +110,73 @@ const RentalDetailsPage = () => {
                     </div>
                 </div>
                 <hr></hr>
-                <div className='mt-6 w-[50%]'>
-                    <p className='text-lg'>
-                        {details?.data?.desc}
-                    </p>
-                </div>
-                <hr className='my-10'></hr>
-                <div>
-                    <p className='text-2xl font-medium mb-3'>What this place offers</p>
-                    <div className='grid grid-cols-2 gap-2 w-[50%]'>
-                        {details?.data?.amenities.map((ame) => {
-                            return <div className='flex my-2'>
-                                <img alt="img" className='my-auto' width={'25px'} src={ame === 'Kitchen' ? kitchen : ame === 'Sea view' ? seaView : ame === 'Free parking on premises' ? parking :
-                                    ame === 'Wifi' ? wifi : ame === 'Private pool' ? pool : ame === 'Firepit' ? firepit : ame === 'Oven' ? oven : ame === 'Dishwasher' ? dishwasher : ame ===
-                                        'Security cameras on property' ? camera : ame === 'Outdoor dining area' ? dining : ''} />
-                                <p className='text-lg ml-4 my-auto'>{ame}</p>
+                <div className='lg:flex md:block justify-between mt-10'>
+                    <div>
+                        <div className='lg:w-[50%] md:w-[100%]'>
+                            <p className='text-lg'>
+                                {details?.data?.desc}
+                            </p>
+                        </div>
+                        <hr className='my-10 w-[80%]'></hr>
+                        <div className='mb-10'>
+                            <p className='text-2xl font-medium mb-3'>What this place offers</p>
+                            <div className='grid grid-cols-2 gap-2 lg:w-[50%] md:w-[100%]'>
+                                {details?.data?.amenities.map((ame) => {
+                                    return <div className='flex my-2'>
+                                        <img alt="img" className='my-auto' width={'25px'} src={ame === 'Kitchen' ? kitchen : ame === 'Sea view' ? seaView : ame === 'Free parking on premises' ? parking :
+                                            ame === 'Wifi' ? wifi : ame === 'Private pool' ? pool : ame === 'Firepit' ? firepit : ame === 'Oven' ? oven : ame === 'Dishwasher' ? dishwasher : ame ===
+                                                'Security cameras on property' ? camera : ame === 'Outdoor dining area' ? dining : ''} />
+                                        <p className='text-lg ml-4 my-auto'>{ame}</p>
+                                    </div>
+                                })}
                             </div>
-                        })}
+                        </div>
+                    </div>
+                    {/* reserve card */}
+                    <div className='bg-white rounded-xl pt-4 lg:px-4 px-0 border lg:border border-0 sm:border-0 lg:shadow-lg shadow-none my-auto'>
+                        <div className='flex'><p className='text-xl font-medium'>₹{details?.data?.price + (guests > 2 ? (guests - 2) * 900 : 0)}</p><p className='my-auto ml-1'>night</p></div>
+                        <div className='rounded-lg border border-gray-400 mt-5'>
+                            <div className='flex border-b border-gray-500'>
+                                <div className='w-[50%] px-3 py-2'>
+                                    <p className='text-xs font-medium'>CHECK-IN</p>
+                                    <DatePicker onChange={onCheckInChange} value={storedCheckIn ? storedCheckIn : checkInValue} />
+                                </div>
+                                <div className='border-l border-gray-400 px-3 py-2'>
+                                    <p className='text-xs font-medium'>CHECK-OUT</p>
+                                    <DatePicker onChange={onCheckOutChange} value={storedCheckOut ? storedCheckOut : checkOutValue} />
+                                </div>
+                            </div>
+                            <div className='flex justify-between border-t px-3 py-2'>
+                                <div>
+                                    <p className='text-xs font-medium'>GUESTS</p>
+                                    <p>{guests} {guests === 1 ? 'guest' : 'guests'}</p>
+                                </div>
+                                <div className='flex'><img alt='img' onClick={() => guests > 1 && setGuests(prev => prev - 1)}
+                                    className={`my-auto ${guests === 1 ? 'grayout' : 'cursor-pointer'} mr-2`} width={'20px'}
+                                    src={minus} /><img alt='img' onClick={() => setGuests(prev => prev + 1)} className='my-auto cursor-pointer' width={'26px'} src={plus} /></div>
+                            </div>
+                        </div>
+                        <p className='mt-2 text-xs text-gray-500'>Children of 12 years or below don't count.</p>
+
+                        <button onClick={() => { handleProceed(); navigate(`/bookingPage/${guests}/${details?.data?.price}/${calculateDaysDifference()}/${formattedDate(storedCheckIn ? storedCheckIn : checkInValue)}/${formattedDate(storedCheckOut ? storedCheckOut : checkOutValue)}`) }} className="w-full mt-4 py-3 text-white text-lg font-semibold rounded-lg bg-gradient-to-r
+                 from-red-500 to-pink-600 transition-transform flex justify-center">Proceed</button>
+                        <p className='text-center text-md mt-4'>You won't be charged yet</p>
+                        <div className='flex justify-between pt-2'>
+                            <p className='underline text-lg'>₹{details?.data?.price + (guests > 2 ? (guests - 2) * 900 : 0)} x {calculateDaysDifference()} {calculateDaysDifference() > 1 ? 'nights' : 'night'}</p>
+                            <p className='text-lg'>₹{(details?.data?.price + (guests > 2 ? (guests - 2) * 900 : 0)) * calculateDaysDifference()}</p>
+                        </div>
+                        <div className='flex justify-between pt-2'>
+                            <p className='underline text-lg'>Airbnb service fee</p>
+                            <p>₹ 480</p>
+                        </div>
+                        <hr className='my-5'></hr>
+                        <div className='flex justify-between mb-4'>
+                            <p className='text-lg font-medium'>Total before taxes</p>
+                            <p className='text-lg font-medium'>₹{((details?.data?.price + (guests > 2 ? (guests - 2) * 900 : 0)) * calculateDaysDifference()) + 480}</p>
+                        </div>
                     </div>
                 </div>
                 <Footer />
-            </div>
-
-            {/* reserve card */}
-            <div className='fixed bottom-0 w-[29%] right-20 bg-white rounded-t-xl pt-4 px-6 border shadow-lg'>
-                <div className='flex'><p className='text-xl font-medium'>₹{details?.data?.price + (guests > 2 ? (guests - 2) * 900 : 0)}</p><p className='my-auto ml-1'>night</p></div>
-                <div className='rounded-lg border border-gray-400 mt-5'>
-                    <div className='flex border-b border-gray-500'>
-                        <div className='w-[50%] px-3 py-2'>
-                            <p className='text-xs font-medium'>CHECK-IN</p>
-                            <DatePicker onChange={onCheckInChange} value={storedCheckIn ? storedCheckIn : checkInValue} />
-                        </div>
-                        <div className='border-l border-gray-400 px-3 py-2'>
-                            <p className='text-xs font-medium'>CHECK-OUT</p>
-                            <DatePicker onChange={onCheckOutChange} value={storedCheckOut ? storedCheckOut : checkOutValue} />
-                        </div>
-                    </div>
-                    <div className='flex justify-between border-t px-3 py-2'>
-                        <div>
-                            <p className='text-xs font-medium'>GUESTS</p>
-                            <p>{guests} {guests === 1 ? 'guest' : 'guests'}</p>
-                        </div>
-                        <div className='flex'><img alt='img' onClick={() => guests > 1 && setGuests(prev => prev - 1)}
-                            className={`my-auto ${guests === 1 ? 'grayout' : 'cursor-pointer'} mr-2`} width={'20px'}
-                            src={minus} /><img alt='img' onClick={() => setGuests(prev => prev + 1)} className='my-auto cursor-pointer' width={'26px'} src={plus} /></div>
-                    </div>
-                </div>
-                <p className='mt-2 text-xs text-gray-500'>Children of 12 years or below don't count.</p>
-
-                <button onClick={()=>{handleProceed(); navigate(`/bookingPage/${guests}/${details?.data?.price}/${calculateDaysDifference()}/${formattedDate(storedCheckIn ? storedCheckIn : checkInValue)}/${formattedDate(storedCheckOut ? storedCheckOut : checkOutValue)}`)}} className="w-full mt-4 py-3 text-white text-lg font-semibold rounded-lg bg-gradient-to-r
-                 from-red-500 to-pink-600 transition-transform flex justify-center">Proceed</button>
-                <p className='text-center text-md mt-4'>You won't be charged yet</p>
-                <div className='flex justify-between pt-2'>
-                    <p className='underline text-lg'>₹{details?.data?.price + (guests > 2 ? (guests - 2) * 900 : 0)} x {calculateDaysDifference()} {calculateDaysDifference() > 1 ? 'nights' : 'night'}</p>
-                    <p className='text-lg'>₹{(details?.data?.price + (guests > 2 ? (guests - 2) * 900 : 0)) * calculateDaysDifference()}</p>
-                </div>
-                <div className='flex justify-between pt-2'>
-                    <p className='underline text-lg'>Airbnb service fee</p>
-                    <p>₹ 480</p>
-                </div>
-                <hr className='my-5'></hr>
-                <div className='flex justify-between mb-4'>
-                    <p className='text-lg font-medium'>Total before taxes</p>
-                    <p className='text-lg font-medium'>₹{((details?.data?.price + (guests > 2 ? (guests - 2) * 900 : 0)) * calculateDaysDifference()) + 480}</p>
-                </div>
             </div>
         </>
     )
