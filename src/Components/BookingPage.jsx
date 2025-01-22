@@ -114,7 +114,7 @@ const BookingPage = () => {
     return (
         <>
             {modal && <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                <div className="px-10 w-[30%] h-[75%] light-bg py-8 rounded-xl shadow-lg">
+                <div className="px-10 lg:w-[30%] md:w-[70%] w-[95%] h-[75%] light-bg py-8 rounded-xl shadow-lg">
                     <div className='h-[85%]'>
                         {!paySuccess ? <Lottie animationData={paymentData} loop={false} /> : <div className='h-full flex-grow flex items-center justify-center'><img alt='img' className='mx-auto' width={'80%'} src={greenCheck} /></div>}
                     </div>
@@ -130,13 +130,13 @@ const BookingPage = () => {
 
             <div>
                 <div className='border-b border-gray-200 py-6'>
-                    <img onClick={()=>navigate('/')} alt="img" className='ml-6 cursor-pointer' width={'8%'} src={airbnblogo} />
+                    <img onClick={()=>navigate('/')} alt="img" className='ml-6 cursor-pointer' width={'100px'} src={airbnblogo} />
                 </div>
-                <div className='flex ml-14 my-16'>
+                <div className='flex ml-4 md:ml-14 lg:ml-14 my-8 md:my-16 lg:my-16'>
                     <img alt="img" onClick={() => navigate(-1)} className='my-auto cursor-pointer' width={'12px'} src={leftArrow} />
-                    <p className='text-4xl font-medium ml-4'>Request to book</p>
+                    <p className='lg:text-4xl md:text-4xl text-3xl font-medium ml-4'>Request to book</p>
                 </div>
-                <div className='ml-20 w-[40%]'>
+                <div className='mx-5 md:mx-20 lg:mx-20 lg:w-[40%] sm:w-[80%]'>
                     <p className='text-2xl font-medium'>Your trip</p>
                     <div className='flex justify-between mt-4'>
                         <div>
@@ -187,17 +187,9 @@ const BookingPage = () => {
                         </div>
                         {payClick && <p className='mt-1 text-sm text-red-500'>{`${card.length===0 ? 'Plese enter card number' : !validatePay.card ? 'Incorrect card number' : expire.length===0 ? 'Please enter expiry date' : !validatePay.expire ? 'Invalid expiry date' : cvv.length===0 ? 'Please enter CVV number' : !validatePay.cvv ? 'Incorrect CVV number' : ''}`}</p>}
                     </div>}
-                    <hr className='my-7'></hr>
-                    <p className='text-2xl font-medium mb-4'>Cancellation policy</p>
-                    <span className='font-medium text-lg leading-tight'>Free cancellation before {`${formattedDate(new Date())}`}.</span>&nbsp;<span className='text-lg leading-tight'>Cancel before check-in on {dates} for a partial refund.</span>
-                    <hr className='my-7'></hr>
-                    <p className='text-xs mb-6'>By selecting the button below, I agree to the Host's House Rules, Ground rules for guests, Airbnb's Rebooking and Refund Policy and that Airbnb can charge my payment method if I’m responsible for damage. I agree to pay the total amount shown if the Host accepts my booking request.</p>
-                    <button onClick={handlePay} className="w-full mt-4 py-3 text-white text-lg font-semibold rounded-lg bg-gradient-to-r
-                    from-red-500 to-pink-600 transition-transform flex justify-center mb-16">Pay ₹{(price*nights)+878}</button>
-                </div>
 
-                {/* payment card */}
-                <div className='fixed bottom-20 right-20 border w-[37%] bg-white rounded-2xl px-7 py-6'>
+                    {/* payment card */}
+                    <div className='lg:fixed bottom-20 mt-4 right-20 border lg:w-[37%] w-[100%] bg-white rounded-2xl lg:px-7 md:px-7 px-3 py-6'>
                     <div className='flex'>
                         <img alt="img" className='rounded-xl' width={'130px'} src={bookedStay?.data?.images[0]} />
                         <div className='my-auto ml-4'>
@@ -230,6 +222,14 @@ const BookingPage = () => {
                         <p className='text-lg font-medium'>₹{(price*nights)+878}</p>
                     </div>
                 </div>
+                <hr className='my-6'></hr>
+                    <p className='text-2xl font-medium mb-4'>Cancellation policy</p>
+                    <span className='font-medium text-lg leading-tight'>Free cancellation before {`${formattedDate(new Date())}`}.</span>&nbsp;<span className='text-lg leading-tight'>Cancel before check-in on {dates} for a partial refund.</span>
+                    <hr className='my-7'></hr>
+                    <p className='text-xs mb-6'>By selecting the button below, I agree to the Host's House Rules, Ground rules for guests, Airbnb's Rebooking and Refund Policy and that Airbnb can charge my payment method if I’m responsible for damage. I agree to pay the total amount shown if the Host accepts my booking request.</p>
+                    <button onClick={handlePay} className="w-full mt-4 py-3 text-white text-lg font-semibold rounded-lg bg-gradient-to-r
+                    from-red-500 to-pink-600 transition-transform flex justify-center mb-16">Pay ₹{(price*nights)+878}</button>
+                </div>                
             </div>
         </>
     )

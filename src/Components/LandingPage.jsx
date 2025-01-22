@@ -164,7 +164,9 @@ const LandingPage = () => {
                     </div>
                     <button onClick={()=>navigate('/rentalspage')} className='rounded-lg border border-gray-400 py-2 px-4 flex font-medium'>Show all <img alt="img"className='my-auto' width={'15px'} src={next} /></button>
                 </div>
+                <div className='lg:mx-8 mx-6'>
                 <Footer/>
+                </div> 
             </div>
         </div>
     )

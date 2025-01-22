@@ -1,12 +1,13 @@
 import axios from "axios"
 import { GET_PRODUCTS, GET_PRODUCTS_FAIL, GET_PRODUCTS_SUCCESS, GET_SINGLE_PRODUCT, GET_SINGLE_PRODUCT_FAIL, GET_SINGLE_PRODUCT_SUCCESS, UPDATE_WISHLIST_FAIL, UPDATE_WISHLIST_SUCCESS, WISHLIST } from "../Constant/constant"
 
-export const getData = () => async (dispatch) =>{
+export const getData = (location) => async (dispatch) =>{
     try{
         dispatch({
             type: GET_PRODUCTS
         })
-        const data = await axios.get('https://airbnb-backend-eight-omega.vercel.app/api/products')
+        const url = location ? `https://airbnb-backend-eight-omega.vercel.app/api/products?location=${location}` : 'https://airbnb-backend-eight-omega.vercel.app/api/products'
+        const data = await axios.get(url)
         dispatch({
             type: GET_PRODUCTS_SUCCESS,
             payload: data

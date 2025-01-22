@@ -36,6 +36,7 @@ const RentalDetailsPage = () => {
     const dispatch = useDispatch()
     const storedCheckIn = JSON.parse(sessionStorage.getItem('checkInValue'))
     const storedCheckOut = JSON.parse(sessionStorage.getItem('checkOutValue'))
+    const guestCount = JSON.parse(sessionStorage.getItem('guestCount'))
     const [guests, setGuests] = useState(1)
     const [checkInValue, onCheckInChange] = useState(new Date());
     const [checkOutValue, onCheckOutChange] = useState(() => {
@@ -55,6 +56,12 @@ const RentalDetailsPage = () => {
         dispatch(getSingleData(id))
     }, [id])
 
+    useEffect(()=>{
+        if(guestCount){
+            setGuests(guestCount)
+        }
+    },[])
+
     const handleProceed = () => {
         localStorage.setItem('bookedStay', JSON.stringify(details))
     }
@@ -62,7 +69,7 @@ const RentalDetailsPage = () => {
     return (
         <>
             <Navbar />
-            <div className='lg:mx-16 mx-6 pt-5'>
+            <div className='lg:mx-8 mx-6 mt-14 pt-5'>
                 <div className='flex justify-between pb-5'>
                     <p className='lg:text-3xl text-xl font-medium'>
                         {details?.data?.name}
@@ -149,7 +156,7 @@ const RentalDetailsPage = () => {
                             <div className='flex justify-between border-t px-3 py-2'>
                                 <div>
                                     <p className='text-xs font-medium'>GUESTS</p>
-                                    <p>{guests} {guests === 1 ? 'guest' : 'guests'}</p>
+                                    <p>{guests} {guests > 1 ? 'guests' : 'guest'}</p>
                                 </div>
                                 <div className='flex'><img alt='img' onClick={() => guests > 1 && setGuests(prev => prev - 1)}
                                     className={`my-auto ${guests === 1 ? 'grayout' : 'cursor-pointer'} mr-2`} width={'20px'}
@@ -159,7 +166,7 @@ const RentalDetailsPage = () => {
                         <p className='mt-2 text-xs text-gray-500'>Children of 12 years or below don't count.</p>
 
                         <button onClick={() => { handleProceed(); navigate(`/bookingPage/${guests}/${details?.data?.price}/${calculateDaysDifference()}/${formattedDate(storedCheckIn ? storedCheckIn : checkInValue)}/${formattedDate(storedCheckOut ? storedCheckOut : checkOutValue)}`) }} className="w-full mt-4 py-3 text-white text-lg font-semibold rounded-lg bg-gradient-to-r
-                 from-red-500 to-pink-600 transition-transform flex justify-center">Proceed</button>
+                        from-red-500 to-pink-600 transition-transform flex justify-center">Proceed</button>
                         <p className='text-center text-md mt-4'>You won't be charged yet</p>
                         <div className='flex justify-between pt-2'>
                             <p className='underline text-lg'>₹{details?.data?.price + (guests > 2 ? (guests - 2) * 900 : 0)} x {calculateDaysDifference()} {calculateDaysDifference() > 1 ? 'nights' : 'night'}</p>
