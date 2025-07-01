@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router'
-import airbnblogo from '../images/airbnb.png'
+import rentsSphereLogo from '../images/rentspehereLogo.png'
 import search from '../images/search.png'
 import profile from '../images/profile.png'
 import hamburger from '../images/hamburger.webp'
@@ -99,7 +99,7 @@ const Navbar = () => {
                         <p className='mx-auto font-medium text-md'>Log in or Sign up</p>
                     </div>
                     <div className='h-[85%] px-5 py-10'>
-                        <p className='text-xl font-medium'>Welcome to Airbnb</p>
+                        <p className='text-xl font-medium'>Welcome to RentSphere</p>
                         <div className='border rounded-t-xl px-2 py-1 mt-4'>
                             <p className='text-sm text-gray-500 my-auto'>Country/Region</p>
                             <p className='text-md my-auto'>India(+91)</p>
@@ -115,7 +115,6 @@ const Navbar = () => {
                     </div>
                 </div>
             </div>}
-
             {searchModal && <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                 <div className="lg:w-[500px] relative px-5 py-3 md:w-[500px] w-[95%] h-[75%] bg-white rounded-xl shadow-lg">
                     <p className='text-xl font-medium'>Search destination</p>
@@ -148,7 +147,7 @@ const Navbar = () => {
 
             <div onClick={() => setGuestDropdown(false)} className='pb-8'>
                 <div className={`flex h-[80px] px-[2%] z-10 fixed top-0 bg-white justify-between py-4 w-full`}>
-                    <img onClick={() => navigate('/')} alt="img" width={'100px'} className='my-auto cursor-pointer' src={airbnblogo} />
+                    <img onClick={() => navigate('/')} alt="img" width={'150px'} className='my-auto cursor-pointer' src={rentsSphereLogo} />
                     <div onClick={()=>setSearchModal(true)} className='border w-[60%] border-gray-400 rounded-3xl lg:hidden md:hidden flex items-center px-10 justify-center'><img className='my-auto mr-2' width={'20px'} 
                     src={blackSearch} /><span className='text-md text-gray-600 font-medium'>{`${location ? location + '...' : 'Start your search'}`}</span></div>
                     {(storedCheckIn || showSmallNav) && !route.pathname.includes('rentalDetailsPage') ? <div className={`border transition 

@@ -32,11 +32,11 @@ const Footer = () => {
             </div>
 
             <div className='mt-16 mb-8 flex'>
-                <p className='text-md font-medium underline'>Airbnb</p>&nbsp;
+                <p className='text-md font-medium underline'>RentSphere</p>&nbsp;
                 <p>{` > India`}</p>
             </div>
             <hr></hr>
-            <div className='my-8 text-sm'>© 2024 Airbnb, Inc. Privacy . Terms . Site Map</div>
+            <div className='my-8 text-sm'>© 2024 RentSphere, Inc. Privacy . Terms . Site Map</div>
         </div>
     )
 }

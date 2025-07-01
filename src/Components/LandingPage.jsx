@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import airbnblogo from '../images/airbnb.png'
+import rentsSphereLogo from '../images/rentspehereLogo.png'
 import backDesign from '../images/backDesign.webp'
 import search from '../images/search.png'
 import chalets from '../images/chalets.webp'
@@ -65,18 +65,18 @@ const LandingPage = () => {
     return (
         <div>
             <div className={`flex px-[5%] bg-white justify-between py-6 w-full`}>
-                <img alt="img"width={'100px'} src={airbnblogo} />
+                <img alt="img"width={'150px'} src={rentsSphereLogo} />
                 <div className='flex'>
-                    <p className='text-md text-nowrap font-medium my-auto'>Airbnb rentals</p>
+                    <p className='text-md text-nowrap font-medium my-auto'>RentSphere rentals</p>
                 </div>
             </div>
 
             <div className={`fixed hidden lg:flex top-0 left-0 w-full bg-white shadow-lg z-50 px-[5%] py-2 flex justify-between 
                     transition-transform duration-500 ease-in-out ${showNavbar ? 'translate-y-0' : '-translate-y-full'
                 } flex px-[5%] bg-white justify-between py-2`}>
-                <img alt="img"width={'8%'} className='my-auto' src={airbnblogo} />
+                <img alt="img"width={'12%'} className='my-auto' src={rentsSphereLogo} />
                 <div className='flex'>
-                    <p className='text-md font-medium text-nowrap my-auto'>Airbnb rentals</p>
+                    <p className='text-md font-medium text-nowrap my-auto'>RentSphere rentals</p>
                     <button onClick={() => navigate('/rentalspage')} class="w-full px-5 ml-8 py-3 text-white font-semibold rounded-lg bg-gradient-to-r
                  from-red-500 to-pink-600 transition-transform flex justify-center">
                         Start your search
@@ -91,7 +91,7 @@ const LandingPage = () => {
 
                     <div className='lg:shadow-2xl lg:w-[35%] lg:absolute lg:top-1/2 lg:left-15 bg-white rounded-lg lg:p-7 lg:mt-0 mt-3 transform lg:-translate-y-1/2'>
                         <p className='text-2xl lg:text-3xl font-bold text-gray-800'>Holiday rentals in India</p>
-                        <p className='mt-1 text-gray-500 text-lg leading-normal'>Find and book unique accomodation on Airbnb</p>
+                        <p className='mt-1 text-gray-500 text-lg leading-normal'>Find and book unique accomodation on RentSphere</p>
                         <div className='border border-gray-300 pb-2 pt-1 px-4 mt-2 rounded-lg'>
                             <div><label className='text-xs font-medium'>LOCATION</label><br />
                                 <input className='outline-none' value={'India'} /></div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import airbnblogo from '../images/airbnb.png'
+import rentSphereLogo from '../images/rentspehereLogo.png'
 import leftArrow from '../images/left-arrow.png'
 import payment from '../images/payment.png'
 import dropdown from '../images/dropdown.webp'
@@ -130,7 +130,7 @@ const BookingPage = () => {
 
             <div>
                 <div className='border-b border-gray-200 py-6'>
-                    <img onClick={()=>navigate('/')} alt="img" className='ml-6 cursor-pointer' width={'100px'} src={airbnblogo} />
+                    <img onClick={()=>navigate('/')} alt="img" className='ml-6 cursor-pointer' width={'150px'} src={rentSphereLogo} />
                 </div>
                 <div className='flex ml-4 md:ml-14 lg:ml-14 my-8 md:my-16 lg:my-16'>
                     <img alt="img" onClick={() => navigate(-1)} className='my-auto cursor-pointer' width={'12px'} src={leftArrow} />
@@ -209,7 +209,7 @@ const BookingPage = () => {
                         <p className='text-lg'>₹{price * nights}</p>
                     </div>
                     <div className='flex justify-between pt-2'>
-                        <p className='underline text-lg'>Airbnb service fee</p>
+                        <p className='underline text-lg'>RentSphere service fee</p>
                         <p>₹480</p>
                     </div>
                     <div className='flex justify-between pt-2'>
@@ -226,7 +226,7 @@ const BookingPage = () => {
                     <p className='text-2xl font-medium mb-4'>Cancellation policy</p>
                     <span className='font-medium text-lg leading-tight'>Free cancellation before {`${formattedDate(new Date())}`}.</span>&nbsp;<span className='text-lg leading-tight'>Cancel before check-in on {dates} for a partial refund.</span>
                     <hr className='my-7'></hr>
-                    <p className='text-xs mb-6'>By selecting the button below, I agree to the Host's House Rules, Ground rules for guests, Airbnb's Rebooking and Refund Policy and that Airbnb can charge my payment method if I’m responsible for damage. I agree to pay the total amount shown if the Host accepts my booking request.</p>
+                    <p className='text-xs mb-6'>By selecting the button below, I agree to the Host's House Rules, Ground rules for guests, RentSphere's Rebooking and Refund Policy and that RentSphere can charge my payment method if I’m responsible for damage. I agree to pay the total amount shown if the Host accepts my booking request.</p>
                     <button onClick={handlePay} className="w-full mt-4 py-3 text-white text-lg font-semibold rounded-lg bg-gradient-to-r
                     from-red-500 to-pink-600 transition-transform flex justify-center mb-16">Pay ₹{(price*nights)+878}</button>
                 </div>                

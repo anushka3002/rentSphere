@@ -173,7 +173,7 @@ const RentalDetailsPage = () => {
                             <p className='text-lg'>₹{(details?.data?.price + (guests > 2 ? (guests - 2) * 900 : 0)) * calculateDaysDifference()}</p>
                         </div>
                         <div className='flex justify-between pt-2'>
-                            <p className='underline text-lg'>Airbnb service fee</p>
+                            <p className='underline text-lg'>RentSphere service fee</p>
                             <p>₹ 480</p>
                         </div>
                         <hr className='my-5'></hr>
