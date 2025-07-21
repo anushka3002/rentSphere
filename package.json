@@ -53,6 +53,7 @@
     ]
   },
   "devDependencies": {
-    "tailwindcss": "^3.4.14"
+    "tailwindcss": "^3.4.14",
+    "workbox-cli": "^7.3.0"
   }
 }
