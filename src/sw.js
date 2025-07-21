@@ -1,9 +1,13 @@
+import { precacheAndRoute } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
 import { StaleWhileRevalidate } from 'workbox-strategies';
 
-// Cache API
+precacheAndRoute(self.__WB_MANIFEST)
+
 registerRoute(
-  ({ url }) => url.pathname.startsWith('https://airbnb-backend-eight-omega.vercel.app/api/'),
+  ({ url }) =>
+    url.origin === 'https://airbnb-backend-eight-omega.vercel.app' &&
+    url.pathname.startsWith('/api/'),
   new StaleWhileRevalidate({
     cacheName: 'api-cache',
   })
