@@ -27,6 +27,8 @@ import 'react-calendar/dist/Calendar.css';
 import Footer from './Footer'
 import { formattedDate } from '../functions'
 import Navbar from './Navbar'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 const RentalDetailsPage = () => {
 
@@ -70,18 +72,18 @@ const RentalDetailsPage = () => {
         <>
             <Navbar />
             <div className='lg:mx-8 mx-6 mt-14 pt-5'>
-                <div className='flex justify-between pb-5'>
+                {details?.data?.name ? <div className='flex justify-between pb-5'>
                     <p className='lg:text-3xl text-xl font-medium'>
                         {details?.data?.name}
-                    </p>
-                </div>
-                <div className='flex'>
-                    <img alt="img" className='rounded-xl lg:w-[60%] w-[100%] lg:h-[500px] h-[300px]' src={details?.data?.images[0]} />
+                    </p> 
+                </div>: <Skeleton width={'100%'} height={'50px'} count={1} />}
+                {details?.data?.images[0] ? <div className='flex'>
+                    <img alt="img" className='rounded-xl lg:w-[60%] w-[100%] lg:h-[500px] h-[300px]' src={details?.data?.images[0]} /> 
                     <div className='lg:flex hidden h-[500px] ml-8 w-[30%] flex-col justify-between'>
                         <img alt="img" className='rounded-xl' style={{ height: '46%' }} src={details?.data?.images[1]} />
                         <img alt="img" className='rounded-xl' style={{ height: '46%' }} src={details?.data?.images[2]} />
                     </div>
-                </div>
+                </div> : <Skeleton width={'100%'} height={'300px'} count={1} />}
                 <p className='text-2xl font-medium pt-8'>{details?.data?.location}</p>
                 <p className='text-lg'>{details?.data?.guests} guests • {details?.data?.bedrooms} bedrooms • {details?.data?.beds} beds • 2 bathrooms</p>
                 <div className='flex'><img alt="img" className='my-auto' width={'24px'} src={star} /><p className='text-lg font-medium'>4.85 . </p>&nbsp;<p className='underline text-lg my-auto font-medium'>{details?.data?.reviews} reviews</p></div>
