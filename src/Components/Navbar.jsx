@@ -68,7 +68,7 @@ const Navbar = () => {
     }
 
     const handlePhone = () => {
-        if (!phone) {
+        if (!phone || phone?.length != 10) {
             setPhoneError(true)
         } else {
             localStorage.setItem('userdetails', JSON.stringify(phone))
@@ -105,7 +105,8 @@ const Navbar = () => {
                             <p className='text-md my-auto'>India(+91)</p>
                         </div>
                         <input onChange={(e) => setPhone(e.target.value)} value={phone} className='border mb-1 rounded-b-xl w-full px-3 py-2 focus:outline-none' type='number' />
-                        {phoneError && <p className='text-red-500 text-sm'>Phone number is required</p>}
+                        {/* {phoneError && phone?.length == 0 && <p className='text-red-500 text-sm'>Phone number is required</p>} */}
+                         {phoneError && <p className='text-red-500 text-sm'>Please enter 10 digits</p>}
                         <button onClick={handlePhone} className="w-full my-4 py-3 text-white font-semibold rounded-lg bg-gradient-to-r
                             from-red-500 to-pink-600 transition-transform flex justify-center">
                             Continue
@@ -197,6 +198,7 @@ const Navbar = () => {
                             <p className='text-lg text-gray-700 font-medium mx-3 cursor-pointer'>Stays</p>
                             <p className='text-lg text-gray-500 mx-3 cursor-pointer'>Experiences</p>
                         </div>}
+                        {console.log(userDetails,"user details")}
                     <div className='lg:flex md:flex hidden'>
                         <div onClick={() => setDropdown(!dropdown)} className='relative flex border rounded-3xl ml-5 px-2 shadow-sm cursor-pointer'>
                             <img alt='img' width={'30px'} className='my-auto' src={hamburger} />
